@@ -58,6 +58,7 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 
     // RSVP - Invitados
     Route::get('/rsvp', [AdminRsvpController::class, 'index'])->name('admin.rsvp');
+    Route::post('/rsvp/invite', [AdminRsvpController::class, 'storeInvite'])->name('admin.rsvp.store-invite');
     Route::put('/rsvp/{id}', [AdminRsvpController::class, 'update'])->name('admin.rsvp.update');
     Route::delete('/rsvp/{id}', [AdminRsvpController::class, 'destroy'])->name('admin.rsvp.destroy');
     Route::get('/rsvp-export', [AdminRsvpController::class, 'exportCsv'])->name('admin.rsvp.export');

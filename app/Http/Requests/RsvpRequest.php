@@ -19,14 +19,25 @@ class RsvpRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:50|unique:guests,phone',
             'assistants_count' => 'required|integer|min:0|max:20',
             'is_attending' => 'required|boolean',
             'dietary_restrictions' => 'nullable|string|max:1000',
             'comments' => 'nullable|string|max:1000',
+            'code' => 'nullable|string|exists:guests,code',
         ];
+
+        $code = $this->input('code');
+        if ($code) {
+            $guest = \App\Models\Guest::where('code', $code)->first();
+            $id = $guest ? $guest->id : 'NULL';
+            $rules['phone'] = 'required|string|max:50|unique:guests,phone,' . $id;
+        } else {
+            $rules['phone'] = 'required|string|max:50|unique:guests,phone';
+        }
+
+        return $rules;
     }
 
     /**

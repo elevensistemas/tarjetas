@@ -14,8 +14,15 @@ class PublicInvitationController extends Controller
     /**
      * Display the elegant public digital invitation.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Obtener la invitación personalizada si se provee el código
+        $invitation = null;
+        $code = $request->query('invitado');
+        if ($code) {
+            $invitation = \App\Models\Guest::where('code', $code)->first();
+        }
+
         // Obtener configuración del evento (Singleton / ID 1)
         $event = EventSetting::firstOrCreate(
             ['id' => 1],
@@ -53,7 +60,8 @@ class PublicInvitationController extends Controller
             'music',
             'galleryPhotos',
             'approvedMessages',
-            'approvedPhotos'
+            'approvedPhotos',
+            'invitation'
         ));
     }
 }

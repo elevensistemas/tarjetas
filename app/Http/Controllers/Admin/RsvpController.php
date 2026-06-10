@@ -17,7 +17,10 @@ class RsvpController extends Controller
         $search = $request->input('search');
         $attendance = $request->input('attendance');
 
-        $query = Guest::query();
+        $query = Guest::query()->where(function($q) {
+            $q->where('is_confirmed', true)
+              ->orWhereNotNull('phone');
+        });
 
         // Aplicar búsqueda por nombre o teléfono
         if ($search) {
@@ -34,15 +37,64 @@ class RsvpController extends Controller
 
         $guests = $query->latest()->paginate(15)->withQueryString();
 
-        // Totales rápidos para la cabecera
+        // Obtener listado de invitaciones generadas (pendientes o confirmadas con link)
+        $invitations = Guest::whereNotNull('code')->orderBy('name', 'asc')->get();
+
+        // Obtener configuración del evento
+        $event = \App\Models\EventSetting::first();
+
+        // Totales rápidos para la cabecera (basado en confirmados)
         $totals = [
-            'total_registered' => Guest::count(),
-            'attending' => Guest::where('is_attending', true)->count(),
-            'total_people' => Guest::where('is_attending', true)->sum('assistants_count'),
-            'not_attending' => Guest::where('is_attending', false)->count(),
+            'total_registered' => Guest::where(function($q) {
+                $q->where('is_confirmed', true)->orWhereNotNull('phone');
+            })->count(),
+            'attending' => Guest::where('is_attending', true)->where(function($q) {
+                $q->where('is_confirmed', true)->orWhereNotNull('phone');
+            })->count(),
+            'total_people' => Guest::where('is_attending', true)->where(function($q) {
+                $q->where('is_confirmed', true)->orWhereNotNull('phone');
+            })->sum('assistants_count'),
+            'not_attending' => Guest::where('is_attending', false)->where(function($q) {
+                $q->where('is_confirmed', true)->orWhereNotNull('phone');
+            })->count(),
         ];
 
-        return view('admin.rsvp', compact('guests', 'totals', 'search', 'attendance'));
+        return view('admin.rsvp', compact('guests', 'invitations', 'event', 'totals', 'search', 'attendance'));
+    }
+
+    /**
+     * Store a new pre-invited guest (generate code and link).
+     */
+    public function storeInvite(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'max_passes' => 'required|integer|min:1|max:20',
+        ]);
+
+        // Generar código único legible
+        $slug = \Illuminate\Support\Str::slug($validated['name']);
+        if (empty($slug)) {
+            $slug = 'invitado';
+        }
+        
+        $code = $slug;
+        $counter = 1;
+        while (Guest::where('code', $code)->exists()) {
+            $code = $slug . '-' . $counter;
+            $counter++;
+        }
+
+        Guest::create([
+            'name' => $validated['name'],
+            'max_passes' => $validated['max_passes'],
+            'code' => $code,
+            'is_confirmed' => false,
+            'is_attending' => false,
+            'assistants_count' => 1,
+        ]);
+
+        return redirect()->route('admin.rsvp')->with('success', 'Invitación y enlace creados correctamente.');
     }
 
     /**

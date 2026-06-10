@@ -384,58 +384,104 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-xl-7">
-                    <div class="glass-card shadow-sm">
-                        <form id="rsvp-form" action="{{ route('rsvp.store') }}" method="POST" class="form-premium">
-                            @csrf
-                            
-                            <div id="rsvp-alert-container"></div>
-                            
-                            <div class="row g-3">
-                                <!-- Nombre -->
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label">Nombre y Apellido</label>
-                                    <input type="text" class="form-control" id="name" name="name" required placeholder="Ej: Juan Pérez">
+                    @if($invitation && $invitation->is_confirmed)
+                        <div class="glass-card shadow-sm text-center py-5">
+                            <i class="bi bi-bookmark-check-fill fs-1 text-primary mb-3 d-block"></i>
+                            <h3 class="title-font mb-3 text-white">¡Asistencia Confirmada!</h3>
+                            <p class="fs-5 text-secondary px-3">
+                                Hola <strong>{{ $invitation->name }}</strong>, tu respuesta ya fue registrada con éxito.
+                            </p>
+                            <hr class="border-secondary opacity-25 my-4 mx-auto w-75">
+                            <div class="bg-dark bg-opacity-25 p-4 rounded text-start mb-4 mx-auto w-75 border border-secondary border-opacity-10" style="background-color: rgba(255,255,255,0.02) !important;">
+                                <div class="mb-2"><strong>¿Asistes?:</strong> 
+                                    @if($invitation->is_attending)
+                                        <span class="text-success fw-bold">Sí, asistiré</span>
+                                    @else
+                                        <span class="text-danger fw-bold">No podré asistir</span>
+                                    @endif
                                 </div>
-                                
-                                <!-- Teléfono -->
-                                <div class="col-md-6">
-                                    <label for="phone" class="form-label">Teléfono / WhatsApp</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" required placeholder="Ej: 1122334455">
+                                @if($invitation->is_attending)
+                                    <div class="mb-2"><strong>Lugares reservados:</strong> {{ $invitation->assistants_count }} personas</div>
+                                @endif
+                                @if($invitation->dietary_restrictions)
+                                    <div class="mb-2"><strong>Menú especial:</strong> {{ $invitation->dietary_restrictions }}</div>
+                                @endif
+                                @if($invitation->comments)
+                                    <div class="mb-0"><strong>Comentario:</strong> <span class="italic text-muted">"{{ $invitation->comments }}"</span></div>
+                                @endif
+                            </div>
+                            <p class="small text-muted mb-0 px-4">Si deseas modificar algún dato de tu confirmación, por favor contáctate directamente por WhatsApp.</p>
+                        </div>
+                    @else
+                        <div class="glass-card shadow-sm">
+                            @if($invitation)
+                                <div class="alert alert-info border-0 shadow-sm text-start mb-4" style="border-radius: 12px; background-color: rgba(0, 240, 255, 0.1); border-left: 4px solid #00F0FF !important;">
+                                    <h5 class="fw-bold mb-1" style="color: #00F0FF;"><i class="bi bi-envelope-open-fill me-2"></i>¡Invitación Exclusiva!</h5>
+                                    <p class="mb-0 small text-white-50">Hola <strong>{{ $invitation->name }}</strong>. Tienes reservado un máximo de <strong>{{ $invitation->max_passes }}</strong> {{ $invitation->max_passes == 1 ? 'pase' : 'pases' }}. Por favor, confirma cuántos asistirán a continuación.</p>
                                 </div>
+                            @endif
+
+                            <form id="rsvp-form" action="{{ route('rsvp.store') }}" method="POST" class="form-premium">
+                                @csrf
                                 
-                                <!-- Confirmación de asistencia -->
-                                <div class="col-12 my-3">
-                                    <label class="form-label d-block mb-3 text-center">¿Asistirás a mi fiesta?</label>
-                                    <div class="d-flex justify-content-center gap-4">
-                                        <div class="form-check form-check-inline m-0">
-                                            <input class="form-check-input d-none" type="radio" name="is_attending" id="attending-yes" value="1" checked required>
-                                            <label class="btn btn-premium-outline px-4 w-100 py-3 d-flex flex-column align-items-center" for="attending-yes" style="min-width: 140px; border-radius: 15px;">
-                                                <i class="bi bi-emoji-smile fs-2 mb-1"></i>
-                                                <span>¡Sí, asisto!</span>
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline m-0">
-                                            <input class="form-check-input d-none" type="radio" name="is_attending" id="attending-no" value="0" required>
-                                            <label class="btn btn-premium-outline px-4 w-100 py-3 d-flex flex-column align-items-center" for="attending-no" style="min-width: 140px; border-radius: 15px;">
-                                                <i class="bi bi-emoji-frown fs-2 mb-1"></i>
-                                                <span>No podré</span>
-                                            </label>
+                                @if($invitation)
+                                    <input type="hidden" name="code" value="{{ $invitation->code }}">
+                                @endif
+
+                                <div id="rsvp-alert-container"></div>
+                                
+                                <div class="row g-3">
+                                    <!-- Nombre -->
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">Nombre y Apellido</label>
+                                        <input type="text" class="form-control" id="name" name="name" required placeholder="Ej: Juan Pérez" value="{{ $invitation ? $invitation->name : '' }}" {{ $invitation ? 'readonly' : '' }}>
+                                    </div>
+                                    
+                                    <!-- Teléfono -->
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label">Teléfono / WhatsApp</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone" required placeholder="Ej: 1122334455">
+                                    </div>
+                                    
+                                    <!-- Confirmación de asistencia -->
+                                    <div class="col-12 my-3">
+                                        <label class="form-label d-block mb-3 text-center">¿Asistirás a mi fiesta?</label>
+                                        <div class="d-flex justify-content-center gap-4">
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input d-none" type="radio" name="is_attending" id="attending-yes" value="1" checked required>
+                                                <label class="btn btn-premium-outline px-4 w-100 py-3 d-flex flex-column align-items-center" for="attending-yes" style="min-width: 140px; border-radius: 15px;">
+                                                    <i class="bi bi-emoji-smile fs-2 mb-1"></i>
+                                                    <span>¡Sí, asisto!</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline m-0">
+                                                <input class="form-check-input d-none" type="radio" name="is_attending" id="attending-no" value="0" required>
+                                                <label class="btn btn-premium-outline px-4 w-100 py-3 d-flex flex-column align-items-center" for="attending-no" style="min-width: 140px; border-radius: 15px;">
+                                                    <i class="bi bi-emoji-frown fs-2 mb-1"></i>
+                                                    <span>No podré</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Cantidad de asistentes -->
-                                <div class="col-md-6" id="assistants-container">
-                                    <label for="assistants_count" class="form-label">Cantidad de Acompañantes</label>
-                                    <select class="form-select" id="assistants_count" name="assistants_count">
-                                        <option value="1" selected>Asisto solo/a (1)</option>
-                                        <option value="2">Somos 2 personas</option>
-                                        <option value="3">Somos 3 personas</option>
-                                        <option value="4">Somos 4 personas</option>
-                                        <option value="5">Somos 5 personas</option>
-                                        <option value="6">Somos más de 5</option>
-                                    </select>
-                                </div>
+                                    <!-- Cantidad de asistentes -->
+                                    <div class="col-md-6" id="assistants-container">
+                                        <label for="assistants_count" class="form-label">Cantidad de Acompañantes</label>
+                                        <select class="form-select" id="assistants_count" name="assistants_count">
+                                            @if($invitation)
+                                                @for($i = 1; $i <= $invitation->max_passes; $i++)
+                                                    <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>{{ $i == 1 ? 'Asisto solo/a (1)' : "Somos $i personas" }}</option>
+                                                @endfor
+                                            @else
+                                                <option value="1" selected>Asisto solo/a (1)</option>
+                                                <option value="2">Somos 2 personas</option>
+                                                <option value="3">Somos 3 personas</option>
+                                                <option value="4">Somos 4 personas</option>
+                                                <option value="5">Somos 5 personas</option>
+                                                <option value="6">Somos más de 5</option>
+                                            @endif
+                                        </select>
+                                    </div>
 
                                 <!-- Restricciones Alimentarias -->
                                 <div class="col-md-6" id="dietary-container">
@@ -466,6 +512,7 @@
                                 </div>
                             </div>
                         </form>
+                    @endif
                     </div>
                 </div>
             </div>
