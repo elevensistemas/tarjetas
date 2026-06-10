@@ -1,0 +1,456 @@
+/* ADMIN DASHBOARD STYLESHEET */
+
+:root {
+    --admin-sidebar-bg: #1e1e2f;
+    --admin-sidebar-color: #a9abbd;
+    --admin-sidebar-active: #ffffff;
+    --admin-sidebar-hover-bg: #2d2d44;
+    --admin-accent: #f4c2c2;
+    --admin-accent-dark: #d4af37;
+    --admin-bg-light: #f8f9fa;
+}
+
+body.admin-body {
+    background-color: var(--admin-bg-light);
+    font-family: 'Inter', sans-serif;
+    color: #4a4a68;
+    overflow-x: hidden;
+}
+
+/* Sidebar Layout */
+.admin-wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 260px;
+    max-width: 260px;
+    background: var(--admin-sidebar-bg);
+    color: var(--admin-sidebar-color);
+    transition: all 0.3s;
+    min-height: 100vh;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+}
+
+#sidebar.active {
+    margin-left: -260px;
+}
+
+#sidebar .sidebar-header {
+    padding: 25px 20px;
+    background: #151521;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    display: block;
+    color: var(--admin-sidebar-color);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+#sidebar ul li a:hover {
+    color: var(--admin-sidebar-active);
+    background: var(--admin-sidebar-hover-bg);
+    border-left-color: var(--admin-accent);
+}
+
+#sidebar ul li.active > a {
+    color: var(--admin-sidebar-active);
+    background: var(--admin-sidebar-hover-bg);
+    border-left-color: var(--admin-accent-dark);
+    font-weight: 600;
+}
+
+#sidebar ul li a i {
+    margin-right: 12px;
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+/* Main Content Area */
+#content {
+    width: 100%;
+    padding: 30px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* Top Navbar */
+.admin-navbar {
+    padding: 15px 0px;
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+/* Dashboard Cards */
+.metric-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px 20px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+}
+
+.metric-card .icon-box {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.metric-card .metric-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2b2b40;
+    line-height: 1;
+}
+
+.metric-card .metric-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #8c90a6;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+/* Status Badges */
+.badge-pending {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-approved {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Forms and Inputs */
+.admin-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 30px;
+    border: none;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+}
+
+.admin-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2b2b40;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 15px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--admin-accent-dark);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+/* Tables Custom */
+.admin-table thead th {
+    background-color: #f1f2f6;
+    color: #5c607a;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border-bottom: none;
+    padding: 15px 20px;
+}
+
+.admin-table tbody td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f2f6;
+    color: #4a4a68;
+    font-size: 0.9rem;
+}
+
+/* Sidebar Toggle Trigger */
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+    background: transparent;
+}
+
+/* Settings Tabs */
+.settings-tabs .nav-link {
+    color: #4a4a68;
+    font-weight: 600;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+}
+
+.settings-tabs .nav-link:hover {
+    color: var(--admin-accent-dark);
+}
+
+.settings-tabs .nav-link.active {
+    color: var(--admin-accent-dark);
+    background-color: transparent;
+    border-bottom-color: var(--admin-accent-dark);
+}
+
+/* Admin Grid Previews */
+.gallery-preview-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.gallery-preview-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.gallery-preview-actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30, 30, 47, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    gap: 10px;
+}
+
+.gallery-preview-card:hover .gallery-preview-actions {
+    opacity: 1;
+}
+
+/* Image highlight star badge */
+.highlight-star {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffc107;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 5;
+}
+
+/* Responsive sidebar fixes */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -260px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #content {
+        padding: 15px;
+    }
+}
+
+/* ==========================================================================
+   SMARTPHONE SIMULATOR PREVIEW STYLES (Y2K Neon Collab)
+   ========================================================================== */
+.phone-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 10px;
+}
+
+/* Transmitting Badge */
+.stream-badge {
+    background-color: #0c0c12;
+    border: 2px solid #39ff14; /* Neon Green border */
+    color: #39ff14;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 30px;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.stream-pulse-dot {
+    width: 9px;
+    height: 9px;
+    background-color: #39ff14;
+    border-radius: 50%;
+    animation: streamBlink 1s infinite alternate;
+    box-shadow: 0 0 8px #39ff14;
+}
+
+@keyframes streamBlink {
+    from { opacity: 1; filter: brightness(1.2); }
+    to { opacity: 0.2; filter: brightness(0.6); }
+}
+
+/* Smartphone Frame */
+.smartphone-frame {
+    position: relative;
+    width: 320px;
+    height: 640px;
+    background: #08080c;
+    border: 12px solid #1a1a24;
+    border-radius: 44px;
+    box-shadow: 
+        0 0 0 3px rgba(244, 194, 194, 0.3), /* Base Accent gold/pink */
+        0 0 25px rgba(255, 0, 255, 0.25), /* LED Fucsia glow */
+        0 15px 35px rgba(0, 0, 0, 0.4),
+        0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.smartphone-frame:hover {
+    box-shadow: 
+        0 0 0 3px rgba(57, 255, 20, 0.5), /* Glow neon green on hover */
+        0 0 30px rgba(255, 0, 255, 0.5), /* Intense pink glow */
+        0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
+/* Dynamic Notch / Island */
+.smartphone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 26px;
+    background: #000000;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.smartphone-camera {
+    width: 8px;
+    height: 8px;
+    background: #111116;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid #222;
+}
+
+.smartphone-speaker {
+    width: 32px;
+    height: 4px;
+    background: #22222a;
+    border-radius: 10px;
+}
+
+/* Phone Screen Container */
+.smartphone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #08080c;
+    position: relative;
+}
+
+/* Glass Reflection glare */
+.smartphone-glass-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0) 46%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Inner IFrame loading live invitation website */
+.smartphone-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #08080c;
+}
+
+/* Control tools below device */
+.phone-controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-phone-action {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
