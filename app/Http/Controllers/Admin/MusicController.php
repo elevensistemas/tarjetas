@@ -45,12 +45,17 @@ class MusicController extends Controller
         if ($request->hasFile('music_file')) {
             // Eliminar archivo anterior si existe
             if ($music->file_path) {
-                Storage::disk('public')->delete($music->file_path);
+                $oldPath = public_path($music->file_path);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
             }
 
-            // Guardar el nuevo MP3 en storage/app/public/music
-            $filePath = $request->file('music_file')->store('music', 'public');
-            $music->file_path = $filePath;
+            // Guardar el nuevo MP3 directamente en public/music
+            $file = $request->file('music_file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('music'), $fileName);
+            $music->file_path = 'music/' . $fileName;
         }
 
         $music->save();
@@ -66,7 +71,10 @@ class MusicController extends Controller
         $music = MusicSetting::findOrFail(1);
 
         if ($music->file_path) {
-            Storage::disk('public')->delete($music->file_path);
+            $filePath = public_path($music->file_path);
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
             $music->file_path = null;
             $music->save();
         }

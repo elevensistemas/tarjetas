@@ -31,7 +31,7 @@
 
     <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
     @if($music->is_active && $music->file_path)
-        <audio id="background-audio" src="{{ asset('storage/' . $music->file_path) }}" loop data-autoplay="{{ $music->autoplay ? '1' : '0' }}"></audio>
+        <audio id="background-audio" src="{{ asset($music->file_path) }}" loop data-autoplay="{{ $music->autoplay ? '1' : '0' }}"></audio>
         <div class="audio-player-floating">
             <button id="music-btn" class="music-btn" title="Música de Fondo">
                 <i class="bi bi-volume-mute-fill"></i>

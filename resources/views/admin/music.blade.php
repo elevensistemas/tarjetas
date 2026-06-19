@@ -65,7 +65,7 @@
                     <!-- Pre-escucha -->
                     <div class="px-4 mb-4">
                         <audio controls class="w-100" style="outline: none;">
-                            <source src="{{ asset('storage/' . $music->file_path) }}" type="audio/mpeg">
+                            <source src="{{ asset($music->file_path) }}" type="audio/mpeg">
                             Tu navegador no soporta el elemento de audio.
                         </audio>
                     </div>
