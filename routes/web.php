@@ -87,3 +87,39 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::post('/music', [MusicController::class, 'update'])->name('admin.music.update');
     Route::delete('/music', [MusicController::class, 'destroy'])->name('admin.music.destroy');
 });
+/*
+|--------------------------------------------------------------------------
+| Rutas de Migraciones y Seeders para Hosting Compartido
+|--------------------------------------------------------------------------
+*/
+Route::get('/__migrate', function (\Illuminate\Http\Request $request) {
+    $expectedKey = 'Trinitotolueno2015';
+    $providedKey = $request->query('key');
+
+    if ($providedKey !== $expectedKey) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized.'
+        ], 403);
+    }
+
+    try {
+        $output = "";
+
+        // Run migrations
+        $output .= "--- Running Migrations ---\n";
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $output .= \Illuminate\Support\Facades\Artisan::output() . "\n";
+
+        // Optionally run seeders
+        if ($request->query('seed') === 'true' || $request->has('seed')) {
+            $output .= "--- Running Seeders ---\n";
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+            $output .= \Illuminate\Support\Facades\Artisan::output() . "\n";
+        }
+
+        return response("<pre>{$output}</pre>");
+    } catch (\Exception $e) {
+        return response("Error running migrations: " . $e->getMessage(), 500);
+    }
+})->middleware('throttle:2,1');
