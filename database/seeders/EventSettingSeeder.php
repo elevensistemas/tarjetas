@@ -65,9 +65,9 @@ class EventSettingSeeder extends Seeder
         MusicSetting::updateOrCreate(
             ['id' => 1],
             [
-                'file_path' => null,
+                'file_path' => 'music/zara_larsson_midnight_sun.mp3',
                 'is_active' => true,
-                'autoplay' => false,
+                'autoplay' => true,
             ]
         );
     }
