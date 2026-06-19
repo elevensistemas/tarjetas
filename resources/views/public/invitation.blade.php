@@ -7,15 +7,30 @@
 @section('content')
 
 @php
-    $fotosPath = public_path('fotos');
-    $fotos = [];
-    if (file_exists($fotosPath)) {
-        $files = glob($fotosPath . '/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', GLOB_BRACE);
-        if ($files) {
-            sort($files);
-            foreach ($files as $file) {
-                $fotos[] = basename($file);
+    $possiblePaths = [
+        public_path('fotos'),
+        base_path('public/fotos'),
+        base_path('public_html/fotos'),
+        base_path('../public_html/fotos'),
+        isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/fotos' : null
+    ];
+    
+    $files = [];
+    foreach ($possiblePaths as $path) {
+        if ($path && file_exists($path)) {
+            $matchedFiles = glob($path . '/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', GLOB_BRACE);
+            if (!empty($matchedFiles)) {
+                $files = $matchedFiles;
+                break;
             }
+        }
+    }
+    
+    $fotos = [];
+    if (!empty($files)) {
+        sort($files);
+        foreach ($files as $file) {
+            $fotos[] = basename($file);
         }
     }
     
