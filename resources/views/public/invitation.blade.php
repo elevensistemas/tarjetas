@@ -1192,6 +1192,31 @@
                     showSlide(currentSlideIndex, true);
                 });
             }
+
+            // 🔒 PROTECCIÓN DE FOTOS CONTRA COPIA Y DESCARGA
+            // 1. Evitar clic derecho (menú contextual) sobre cualquier imagen
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
+
+            // 2. Evitar arrastrar y soltar cualquier imagen (para que no la arrastren al escritorio)
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
+
+            // 3. Bloquear atajos de teclado comunes (Ctrl+S para guardar y Ctrl+C para copiar)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                }
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'C')) {
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 @endsection
