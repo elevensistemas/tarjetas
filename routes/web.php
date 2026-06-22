@@ -92,6 +92,17 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 | Rutas de Migraciones y Seeders para Hosting Compartido
 |--------------------------------------------------------------------------
 */
+Route::get('/__fix-music', function() {
+    $music = \App\Models\MusicSetting::find(1);
+    if ($music) {
+        $music->file_path = 'music/zara_larsson_midnight_sun.mp3';
+        $music->is_active = true;
+        $music->save();
+        return "Music path updated to zara_larsson_midnight_sun.mp3 successfully!";
+    }
+    return "Music setting not found.";
+});
+
 Route::get('/__migrate', function (\Illuminate\Http\Request $request) {
     $expectedKey = 'Trinitotolueno2015';
     $providedKey = $request->query('key');
