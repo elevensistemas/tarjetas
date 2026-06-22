@@ -43,18 +43,46 @@ class MusicController extends Controller
         $music->autoplay = $request->has('autoplay');
 
         if ($request->hasFile('music_file')) {
-            // Eliminar archivo anterior si existe
+            $file = $request->file('music_file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $possiblePaths = [
+                public_path('music'),
+                base_path('public/music'),
+                base_path('public_html/music'),
+                base_path('../public_html/music'),
+                isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/music' : null
+            ];
+
+            // Determinar el directorio de destino correcto
+            $targetDir = null;
+            foreach ($possiblePaths as $path) {
+                if ($path) {
+                    if (is_dir($path) || @mkdir($path, 0755, true)) {
+                        $targetDir = $path;
+                        break;
+                    }
+                }
+            }
+            if (!$targetDir) {
+                $targetDir = public_path('music');
+            }
+
+            // Eliminar archivo anterior si existe en cualquiera de las rutas
             if ($music->file_path) {
-                $oldPath = public_path($music->file_path);
-                if (file_exists($oldPath)) {
-                    @unlink($oldPath);
+                $basename = basename($music->file_path);
+                foreach ($possiblePaths as $path) {
+                    if ($path) {
+                        $oldFilePath = $path . '/' . $basename;
+                        if (file_exists($oldFilePath)) {
+                            @unlink($oldFilePath);
+                        }
+                    }
                 }
             }
 
-            // Guardar el nuevo MP3 directamente en public/music
-            $file = $request->file('music_file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('music'), $fileName);
+            // Guardar el nuevo MP3 en el directorio destino resuelto
+            $file->move($targetDir, $fileName);
             $music->file_path = 'music/' . $fileName;
         }
 
@@ -71,9 +99,21 @@ class MusicController extends Controller
         $music = MusicSetting::findOrFail(1);
 
         if ($music->file_path) {
-            $filePath = public_path($music->file_path);
-            if (file_exists($filePath)) {
-                @unlink($filePath);
+            $possiblePaths = [
+                public_path('music'),
+                base_path('public/music'),
+                base_path('public_html/music'),
+                base_path('../public_html/music'),
+                isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] . '/music' : null
+            ];
+            $basename = basename($music->file_path);
+            foreach ($possiblePaths as $path) {
+                if ($path) {
+                    $filePath = $path . '/' . $basename;
+                    if (file_exists($filePath)) {
+                        @unlink($filePath);
+                    }
+                }
             }
             $music->file_path = null;
             $music->save();
