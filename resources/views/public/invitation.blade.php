@@ -110,16 +110,19 @@
                     <div class="device-overlay" data-device="tiktok">
                         <div class="tiktok-live-badge"><span class="badge bg-danger rounded-circle animate-pulse me-1">●</span>EN VIVO</div>
                         <div class="tiktok-live-audience"><i class="bi bi-eye-fill"></i> 15.2k</div>
+                        {{--
                         <div class="tiktok-comments-container">
                             <div class="tiktok-comment"><strong>@sofi.gomez:</strong> ¡Qué facha Bianca! 🔥</div>
                             <div class="tiktok-comment"><strong>@matias_trap:</strong> El mejor 15 del año 💎</div>
                             <div class="tiktok-comment"><strong>@luli_dance:</strong> Queremos ver ese vestido yaaa 😍</div>
                         </div>
+                        --}}
                         <div class="tiktok-action-icons d-flex flex-column align-items-center gap-2">
                             <div class="tiktok-icon-btn"><i class="bi bi-suit-heart-fill text-danger animate-pulse"></i><span>150k</span></div>
                             <div class="tiktok-icon-btn"><i class="bi bi-chat-dots-fill"></i><span>8.2k</span></div>
                             <div class="tiktok-icon-btn"><i class="bi bi-share-fill"></i><span>Compartir</span></div>
                         </div>
+                        {{--
                         <div class="tiktok-user-info">
                             <div class="d-flex align-items-center gap-2">
                                 <div class="rounded-circle bg-secondary border border-2 border-success" style="width: 25px; height: 25px; background: url('{{ !empty($fotos) ? asset('fotos/' . $fotos[0]) : asset('storage/design/bianca_hero_punk.png') }}') center/cover;"></div>
@@ -127,6 +130,7 @@
                             </div>
                             <p class="small m-0 mt-1">¡Preparando la noche mágica! ⚡💀 #Mis15 #PunkStyle</p>
                         </div>
+                        --}}
                     </div>
                     
                     <!-- OVERLAY 2: Retro TV -->
