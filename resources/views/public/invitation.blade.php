@@ -34,13 +34,7 @@
         }
     }
     
-    $devices = [
-        ['device' => 'tv', 'label' => '📺 TV Smart'],
-        ['device' => 'gameboy', 'label' => '🎮 Gameboy Retro'],
-        ['device' => 'tablet', 'label' => '📟 Y2K Tablet'],
-        ['device' => 'astronaut', 'label' => '👩‍🚀 Space HUD'],
-        ['device' => 'polaroid', 'label' => '📸 Polaroid Cam'],
-    ];
+
 @endphp
 
     <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
@@ -89,9 +83,7 @@
 
             <!-- INTERACTIVE SPOTIFY PLAYER FRAME -->
             <div class="spotify-player-card">
-                <div class="player-header d-flex align-items-center justify-content-between mb-3">
-                    <!-- Dynamic Device Tag -->
-                    <span id="device-tag" class="badge bg-secondary font-monospace uppercase text-white animate-pulse" style="font-size: 0.65rem; background-color: var(--color-secondary) !important;">📺 TV Smart</span>
+                <div class="player-header d-flex align-items-center justify-content-end mb-3">
                     <i class="bi bi-three-dots text-white-50"></i>
                 </div>
                 
@@ -99,82 +91,6 @@
                 <div class="player-art-container mb-3 shadow position-relative" id="spotify-art-frame">
                     <!-- Images Slideshow -->
                     <img id="slideshow-img" src="{{ !empty($fotos) ? asset('fotos/' . $fotos[0]) : asset('storage/design/bianca_rollercoaster.png') }}" class="player-art active-slide" alt="Bianca Album Art">
-                    
-                    <!-- TV Scanlines & Static Screen -->
-                    <div id="tv-static" class="tv-static-effect"></div>
-                    
-                    <!-- OVERLAY 2: Retro TV -->
-                    <div class="device-overlay" data-device="tv" style="display: block;">
-                        <div class="tv-channel">CH 15</div>
-                        <div class="tv-vintage-logo">Y2K-TV</div>
-                        <div class="tv-scanlines"></div>
-                        <div class="tv-flicker"></div>
-                        <div class="tv-tint"></div>
-                        <div class="tv-control-knobs">
-                            <span class="knob"></span>
-                            <span class="knob"></span>
-                        </div>
-                    </div>
-                    
-                    <!-- OVERLAY 3: Gameboy Retro -->
-                    <div class="device-overlay" data-device="gameboy">
-                        <div class="gameboy-screen-bezel">
-                            <div class="gameboy-battery-indicator">
-                                <span class="battery-led"></span>
-                                <span class="battery-label">BATTERY</span>
-                            </div>
-                            <div class="gameboy-text-top">DOT MATRIX WITH STEREO SOUND</div>
-                        </div>
-                        <div class="gameboy-buttons-indicator">
-                            <div class="gameboy-dpad"><i class="bi bi-plus-square-fill"></i></div>
-                            <div class="gameboy-a-b">
-                                <span class="gameboy-btn-round">B</span>
-                                <span class="gameboy-btn-round">A</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- OVERLAY 4: Y2K Tech Tablet -->
-                    <div class="device-overlay" data-device="tablet">
-                        <div class="tablet-header">
-                            <span class="window-title">📂 BIANCA_SYSTEM_v1.5.exe</span>
-                            <div class="window-controls">
-                                <span>_</span>
-                                <span>□</span>
-                                <span class="btn-close-window">X</span>
-                            </div>
-                        </div>
-                        <div class="tablet-hud-grid"></div>
-                        <div class="tablet-hud-crosshairs">
-                            <div class="hud-target-bracket corner-tl"></div>
-                            <div class="hud-target-bracket corner-tr"></div>
-                            <div class="hud-target-bracket corner-bl"></div>
-                            <div class="hud-target-bracket corner-br"></div>
-                        </div>
-                        <div class="tablet-battery-hud">
-                            <i class="bi bi-battery-half text-warning animate-pulse"></i> 15%
-                        </div>
-                    </div>
-                    
-                    <!-- OVERLAY 5: Astronaut Spacesuit HUD -->
-                    <div class="device-overlay" data-device="astronaut">
-                        <div class="astronaut-helmet-glass"></div>
-                        <div class="astronaut-hud-telemetry">
-                            <div class="gauge-row"><span>O2 LEVEL:</span> <span class="text-success fw-bold">100%</span></div>
-                            <div class="gauge-row"><span>GRAVITY:</span> <span class="text-info font-monospace">0.15G</span></div>
-                            <div class="gauge-row"><span>MISSION:</span> <span class="text-danger">BIANCA-15</span></div>
-                        </div>
-                        <div class="astronaut-crosshairs">⚡ TARGET LOCKED ⚡</div>
-                    </div>
-                    
-                    <!-- OVERLAY 6: Polaroid Cam (Beach) -->
-                    <div class="device-overlay" data-device="polaroid">
-                        <div class="polaroid-vhs-rec"><span class="badge bg-danger rounded-circle animate-pulse me-1">●</span>REC</div>
-                        <div class="polaroid-vhs-play">PLAY ▶</div>
-                        <div class="polaroid-vhs-timestamp">29 . 08 . 2026</div>
-                        <div class="polaroid-vhs-time">21:00:00</div>
-                        <div class="polaroid-vhs-filter"></div>
-                    </div>
                 </div>
                 
                 <div class="player-track-info text-start d-flex justify-content-between align-items-center mb-3">
@@ -200,11 +116,11 @@
                 
                 <!-- Music Player Controls -->
                 <div class="player-controls d-flex justify-content-between align-items-center px-2 mt-2">
-                    <button class="player-btn" id="btn-spotify-shuffle" title="Mezclar Dispositivo"><i class="bi bi-shuffle"></i></button>
-                    <button class="player-btn" id="btn-spotify-prev" title="Dispositivo Anterior"><i class="bi bi-skip-backward-fill"></i></button>
+                    <button class="player-btn" id="btn-spotify-shuffle" title="Mezclar Fotos"><i class="bi bi-shuffle"></i></button>
+                    <button class="player-btn" id="btn-spotify-prev" title="Foto Anterior"><i class="bi bi-skip-backward-fill"></i></button>
                     <button class="player-btn btn-play-main" id="btn-spotify-play" title="Reproducir Música"><i class="bi bi-play-circle-fill fs-1"></i></button>
-                    <button class="player-btn" id="btn-spotify-next" title="Dispositivo Siguiente"><i class="bi bi-skip-forward-fill"></i></button>
-                    <button class="player-btn" id="btn-spotify-repeat" title="Reiniciar Dispositivo"><i class="bi bi-repeat"></i></button>
+                    <button class="player-btn" id="btn-spotify-next" title="Foto Siguiente"><i class="bi bi-skip-forward-fill"></i></button>
+                    <button class="player-btn" id="btn-spotify-repeat" title="Reiniciar Fotos"><i class="bi bi-repeat"></i></button>
                 </div>
             </div>
 
@@ -997,41 +913,26 @@
             // ==========================================
             const slides = [
                 @if(!empty($fotos))
-                    @foreach($fotos as $index => $foto)
-                        @php
-                            $dev = $devices[$index % count($devices)];
-                        @endphp
+                    @foreach($fotos as $foto)
                         {
-                            image: "{{ asset('fotos/' . $foto) }}",
-                            label: "{{ $dev['label'] }}",
-                            device: "{{ $dev['device'] }}"
+                            image: "{{ asset('fotos/' . $foto) }}"
                         },
                     @endforeach
                 @else
                     {
-                        image: "{{ asset('storage/design/bianca_rollercoaster.png') }}",
-                        label: "📺 TV Smart",
-                        device: "tv"
+                        image: "{{ asset('storage/design/bianca_rollercoaster.png') }}"
                     },
                     {
-                        image: "{{ asset('storage/design/bianca_arcade.png') }}",
-                        label: "🎮 Gameboy Retro",
-                        device: "gameboy"
+                        image: "{{ asset('storage/design/bianca_arcade.png') }}"
                     },
                     {
-                        image: "{{ asset('storage/design/bianca_cyber_neon.png') }}",
-                        label: "📟 Y2K Tablet",
-                        device: "tablet"
+                        image: "{{ asset('storage/design/bianca_cyber_neon.png') }}"
                     },
                     {
-                        image: "{{ asset('storage/design/bianca_astronaut.png') }}",
-                        label: "👩‍🚀 Space HUD",
-                        device: "astronaut"
+                        image: "{{ asset('storage/design/bianca_astronaut.png') }}"
                     },
                     {
-                        image: "{{ asset('storage/design/bianca_beach.png') }}",
-                        label: "📸 Polaroid Cam",
-                        device: "polaroid"
+                        image: "{{ asset('storage/design/bianca_beach.png') }}"
                     }
                 @endif
             ];
@@ -1048,60 +949,14 @@
                 
                 currentSlideIndex = index;
                 const slide = slides[currentSlideIndex];
-                
-                const staticEffect = document.getElementById('tv-static');
                 const slideshowImg = document.getElementById('slideshow-img');
-                const deviceTag = document.getElementById('device-tag');
                 
-                if (staticEffect) {
-                    staticEffect.classList.add('active-glitch');
+                if (slideshowImg) {
+                    slideshowImg.classList.remove('active-slide');
+                    void slideshowImg.offsetWidth; // Force reflow
+                    slideshowImg.src = slide.image;
+                    slideshowImg.classList.add('active-slide');
                 }
-                
-                setTimeout(() => {
-                    if (slideshowImg) {
-                        slideshowImg.src = slide.image;
-                    }
-                    if (deviceTag) {
-                        deviceTag.textContent = slide.label;
-                        
-                        // Adapt border and badge colors
-                        if (slide.device === 'tiktok') {
-                            deviceTag.style.setProperty('background-color', 'var(--color-primary)', 'important');
-                            deviceTag.style.setProperty('color', '#fff', 'important');
-                        } else if (slide.device === 'tv') {
-                            deviceTag.style.setProperty('background-color', 'var(--color-secondary)', 'important');
-                            deviceTag.style.setProperty('color', '#fff', 'important');
-                        } else if (slide.device === 'gameboy') {
-                            deviceTag.style.setProperty('background-color', '#a6192e', 'important');
-                            deviceTag.style.setProperty('color', '#fff', 'important');
-                        } else if (slide.device === 'tablet') {
-                            deviceTag.style.setProperty('background-color', '#0070FF', 'important');
-                            deviceTag.style.setProperty('color', '#fff', 'important');
-                        } else if (slide.device === 'astronaut') {
-                            deviceTag.style.setProperty('background-color', '#00FFFF', 'important');
-                            deviceTag.style.setProperty('color', '#000', 'important');
-                        } else if (slide.device === 'polaroid') {
-                            deviceTag.style.setProperty('background-color', '#ff5500', 'important');
-                            deviceTag.style.setProperty('color', '#fff', 'important');
-                        }
-                    }
-                    
-                    const overlays = document.querySelectorAll('.device-overlay');
-                    overlays.forEach(overlay => {
-                        if (overlay.getAttribute('data-device') === slide.device) {
-                            overlay.style.display = 'block';
-                        } else {
-                            overlay.style.display = 'none';
-                        }
-                    });
-                    
-                    setTimeout(() => {
-                        if (staticEffect) {
-                            staticEffect.classList.remove('active-glitch');
-                        }
-                    }, 150);
-                    
-                }, 200);
 
                 if (isManual) {
                     resetSlideshowTimer();
@@ -1150,14 +1005,6 @@
             if (repeatBtn) {
                 repeatBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    // Play special screen static noise flash
-                    const staticEffect = document.getElementById('tv-static');
-                    if (staticEffect) {
-                        staticEffect.classList.add('active-glitch');
-                        setTimeout(() => {
-                            staticEffect.classList.remove('active-glitch');
-                        }, 500);
-                    }
                     showSlide(currentSlideIndex, true);
                 });
             }
