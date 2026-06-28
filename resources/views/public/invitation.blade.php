@@ -35,7 +35,6 @@
     }
     
     $devices = [
-        ['device' => 'tiktok', 'label' => '📱 TikTok Live'],
         ['device' => 'tv', 'label' => '📺 TV Smart'],
         ['device' => 'gameboy', 'label' => '🎮 Gameboy Retro'],
         ['device' => 'tablet', 'label' => '📟 Y2K Tablet'],
@@ -77,8 +76,6 @@
         
         <!-- VHS Retro Camcorder Overlay -->
         <div class="vhs-cam-overlay">
-            <div class="vhs-left-top"><span class="badge bg-danger rounded-circle animate-pulse me-1">●</span>REC</div>
-            <div class="vhs-right-top">PLAY ▶</div>
             <div class="vhs-left-bottom">{{ $event->event_date->format('d . m . Y') }}</div>
             <div class="vhs-right-bottom">{{ $event->event_date->format('H:i:s') }}</div>
         </div>
@@ -94,47 +91,20 @@
             <div class="spotify-player-card">
                 <div class="player-header d-flex align-items-center justify-content-between mb-3">
                     <!-- Dynamic Device Tag -->
-                    <span id="device-tag" class="badge bg-secondary font-monospace uppercase text-white animate-pulse" style="font-size: 0.65rem; background-color: var(--color-primary) !important;">📱 TikTok Live</span>
+                    <span id="device-tag" class="badge bg-secondary font-monospace uppercase text-white animate-pulse" style="font-size: 0.65rem; background-color: var(--color-secondary) !important;">📺 TV Smart</span>
                     <i class="bi bi-three-dots text-white-50"></i>
                 </div>
                 
                 <!-- Mock Device Frame Container -->
                 <div class="player-art-container mb-3 shadow position-relative" id="spotify-art-frame">
                     <!-- Images Slideshow -->
-                    <img id="slideshow-img" src="{{ !empty($fotos) ? asset('fotos/' . $fotos[0]) : asset('storage/design/bianca_hero_punk.png') }}" class="player-art active-slide" alt="Bianca Album Art">
+                    <img id="slideshow-img" src="{{ !empty($fotos) ? asset('fotos/' . $fotos[0]) : asset('storage/design/bianca_rollercoaster.png') }}" class="player-art active-slide" alt="Bianca Album Art">
                     
                     <!-- TV Scanlines & Static Screen -->
                     <div id="tv-static" class="tv-static-effect"></div>
                     
-                    <!-- OVERLAY 1: TikTok Live -->
-                    <div class="device-overlay" data-device="tiktok">
-                        <div class="tiktok-live-badge"><span class="badge bg-danger rounded-circle animate-pulse me-1">●</span>EN VIVO</div>
-                        <div class="tiktok-live-audience"><i class="bi bi-eye-fill"></i> 15.2k</div>
-                        {{--
-                        <div class="tiktok-comments-container">
-                            <div class="tiktok-comment"><strong>@sofi.gomez:</strong> ¡Qué facha Bianca! 🔥</div>
-                            <div class="tiktok-comment"><strong>@matias_trap:</strong> El mejor 15 del año 💎</div>
-                            <div class="tiktok-comment"><strong>@luli_dance:</strong> Queremos ver ese vestido yaaa 😍</div>
-                        </div>
-                        --}}
-                        <div class="tiktok-action-icons d-flex flex-column align-items-center gap-2">
-                            <div class="tiktok-icon-btn"><i class="bi bi-suit-heart-fill text-danger animate-pulse"></i><span>150k</span></div>
-                            <div class="tiktok-icon-btn"><i class="bi bi-chat-dots-fill"></i><span>8.2k</span></div>
-                            <div class="tiktok-icon-btn"><i class="bi bi-share-fill"></i><span>Compartir</span></div>
-                        </div>
-                        {{--
-                        <div class="tiktok-user-info">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="rounded-circle bg-secondary border border-2 border-success" style="width: 25px; height: 25px; background: url('{{ !empty($fotos) ? asset('fotos/' . $fotos[0]) : asset('storage/design/bianca_hero_punk.png') }}') center/cover;"></div>
-                                <strong>@bianca.quince</strong>
-                            </div>
-                            <p class="small m-0 mt-1">¡Preparando la noche mágica! ⚡💀 #Mis15 #PunkStyle</p>
-                        </div>
-                        --}}
-                    </div>
-                    
                     <!-- OVERLAY 2: Retro TV -->
-                    <div class="device-overlay" data-device="tv">
+                    <div class="device-overlay" data-device="tv" style="display: block;">
                         <div class="tv-channel">CH 15</div>
                         <div class="tv-vintage-logo">Y2K-TV</div>
                         <div class="tv-scanlines"></div>
@@ -1038,11 +1008,6 @@
                         },
                     @endforeach
                 @else
-                    {
-                        image: "{{ asset('storage/design/bianca_hero_punk.png') }}",
-                        label: "📱 TikTok Live",
-                        device: "tiktok"
-                    },
                     {
                         image: "{{ asset('storage/design/bianca_rollercoaster.png') }}",
                         label: "📺 TV Smart",
